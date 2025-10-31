@@ -15,12 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.service.annotation.DeleteExchange;
 
-import br.cefetrj.model.Editora;
 import br.cefetrj.model.Livro;
 import br.cefetrj.service.LivroService;
-import br.cefetrj.to.input.EditoraTOInput;
 import br.cefetrj.to.input.LivroTOInput;
-import br.cefetrj.to.output.EditoraTOOutput;
 import br.cefetrj.to.output.LivroTOOutput;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
