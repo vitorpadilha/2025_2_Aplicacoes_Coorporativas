@@ -2,6 +2,7 @@ package br.cefetrj.to.output;
 
 import java.util.List;
 
+import br.cefetrj.model.Editora;
 import br.cefetrj.model.Livro;
 
 public class EditoraTOOutput {
@@ -9,10 +10,10 @@ public class EditoraTOOutput {
     private String nome;
     private Integer id;
 
-    public EditoraTOOutput(Integer id, String nome, List<Livro> livros) {
-        this.id = id;
-        this.nome = nome;
-        this.livros = livros.stream().map(livro -> {
+    public EditoraTOOutput(Editora editora) {
+        this.id = editora.getId();
+        this.nome = editora.getNome();
+        this.livros = editora.getLivros().stream().map(livro -> {
             LivroTOOutput livroTO = new LivroTOOutput(livro.getId(), livro.getTitulo(), livro.getAutores());
             return livroTO;
         }).toList();

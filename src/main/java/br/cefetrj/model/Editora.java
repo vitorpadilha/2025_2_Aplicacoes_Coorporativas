@@ -21,4 +21,12 @@ public class Editora extends Entidade {
         this.nome = nome;
     }
 
+    public void setLivros(List<Livro> livros) {
+        this.livros = livros;
+    }
+
+    public List<Livro> getLivros() {
+        return livros;
+    }
+
 }

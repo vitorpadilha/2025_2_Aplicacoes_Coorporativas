@@ -16,6 +16,8 @@ import org.springframework.web.service.annotation.DeleteExchange;
 
 import br.cefetrj.model.Editora;
 import br.cefetrj.service.EditoraService;
+import br.cefetrj.to.input.EditoraTOInput;
+import br.cefetrj.to.output.EditoraTOOutput;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -32,27 +34,28 @@ public class EditoraController {
 
     @PostMapping
     @ApiOperation(value = "Salvar registro", notes = "Salva um novo registro no banco de dados")
-    public ResponseEntity<Editora> save(@RequestBody Editora input) {
+    public ResponseEntity<EditoraTOOutput> save(@RequestBody EditoraTOInput input) {
         final var editora = input;
 
-        final Editora created = editoraService.save(editora);
+        final Editora created = editoraService.save(editora.build());
 
-        return new ResponseEntity<>(created, HttpStatus.CREATED);
+        return new ResponseEntity<>(new EditoraTOOutput(created),
+                HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/{id}")
     @ApiOperation(value = "Pesquisar por ID", notes = "Retorna o registro de acordo com o ID repassado")
-    public ResponseEntity<Editora> findById(@PathVariable("id") Integer id) {
+    public ResponseEntity<EditoraTOOutput> findById(@PathVariable("id") Integer id) {
 
-        return ResponseEntity.ok(editoraService.findById(id).orElse(null));
+        return ResponseEntity.ok(editoraService.findById(id).map(EditoraTOOutput::new).orElse(null));
 
     }
 
     @GetMapping
     @ApiOperation(value = "Listar todos", notes = "Retorna todos os registros")
-    public ResponseEntity<List<Editora>> findAll() {
+    public ResponseEntity<List<EditoraTOOutput>> findAll() {
 
-        return ResponseEntity.ok(editoraService.findAll());
+        return ResponseEntity.ok(editoraService.findAll().stream().map(EditoraTOOutput::new).toList());
 
     }
 
