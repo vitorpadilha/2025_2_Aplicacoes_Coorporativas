@@ -19,8 +19,8 @@ public class EditoraService {
         return repository.save(entity);
     }
 
-    public void update(Editora entity) {
-        repository.save(entity);
+    public Editora update(Editora entity) {
+        return repository.save(entity);
     }
 
     public void delete(Integer id) {

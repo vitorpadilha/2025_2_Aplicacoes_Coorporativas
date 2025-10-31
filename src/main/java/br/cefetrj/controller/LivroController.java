@@ -9,13 +9,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.service.annotation.DeleteExchange;
 
+import br.cefetrj.model.Editora;
 import br.cefetrj.model.Livro;
 import br.cefetrj.service.LivroService;
+import br.cefetrj.to.input.EditoraTOInput;
+import br.cefetrj.to.input.LivroTOInput;
+import br.cefetrj.to.output.EditoraTOOutput;
+import br.cefetrj.to.output.LivroTOOutput;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -32,27 +38,36 @@ public class LivroController {
 
     @PostMapping
     @ApiOperation(value = "Salvar registro", notes = "Salva um novo registro no banco de dados")
-    public ResponseEntity<Livro> save(@RequestBody Livro input) {
-        final var Livro = input;
+    public ResponseEntity<LivroTOOutput> save(@RequestBody LivroTOInput input) {
+        final var livro = input.build();
 
-        final Livro created = livroService.save(Livro);
+        final Livro created = livroService.save(livro);
 
-        return new ResponseEntity<>(created, HttpStatus.CREATED);
+        return new ResponseEntity<>(new LivroTOOutput(created), HttpStatus.CREATED);
+    }
+
+    @PutMapping
+    @ApiOperation(value = "Atualizar registro", notes = "Atualiza um registro existente no banco de dados")
+    public ResponseEntity<LivroTOOutput> edit(@RequestBody LivroTOInput input) {
+
+        final Livro updated = livroService.update(input.build());
+
+        return new ResponseEntity<>(new LivroTOOutput(updated), HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}")
     @ApiOperation(value = "Pesquisar por ID", notes = "Retorna o registro de acordo com o ID repassado")
-    public ResponseEntity<Livro> findById(@PathVariable("id") Integer id) {
+    public ResponseEntity<LivroTOOutput> findById(@PathVariable("id") Integer id) {
 
-        return ResponseEntity.ok(livroService.findById(id).orElse(null));
+        return ResponseEntity.ok(livroService.findById(id).map(LivroTOOutput::new).orElse(null));
 
     }
 
     @GetMapping
     @ApiOperation(value = "Listar todos", notes = "Retorna todos os registros")
-    public ResponseEntity<List<Livro>> findAll() {
+    public ResponseEntity<List<LivroTOOutput>> findAll() {
 
-        return ResponseEntity.ok(livroService.findAll());
+        return ResponseEntity.ok(livroService.findAll().stream().map(LivroTOOutput::new).toList());
 
     }
 

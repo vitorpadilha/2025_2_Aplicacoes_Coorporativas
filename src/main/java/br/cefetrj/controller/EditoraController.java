@@ -47,9 +47,8 @@ public class EditoraController {
     @PutMapping
     @ApiOperation(value = "Atualizar registro", notes = "Atualiza um registro existente no banco de dados")
     public ResponseEntity<EditoraTOOutput> edit(@RequestBody EditoraTOInput input) {
-        final var editora = input;
 
-        final Editora created = editoraService.save(editora.build());
+        final Editora created = editoraService.save(input.build());
 
         return new ResponseEntity<>(new EditoraTOOutput(created), HttpStatus.OK);
     }

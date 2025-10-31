@@ -12,10 +12,7 @@ public class EditoraTOOutput {
     public EditoraTOOutput(Editora editora) {
         this.id = editora.getId();
         this.nome = editora.getNome();
-        this.livros = editora.getLivros().stream().map(livro -> {
-            LivroTOOutput livroTO = new LivroTOOutput(livro.getId(), livro.getTitulo(), livro.getAutores());
-            return livroTO;
-        }).toList();
+        this.livros = editora.getLivros().stream().map(LivroTOOutput::new).toList();
     }
 
     public Integer getId() {
