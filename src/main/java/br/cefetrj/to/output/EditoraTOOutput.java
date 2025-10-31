@@ -12,8 +12,10 @@ public class EditoraTOOutput {
     public EditoraTOOutput(Editora editora) {
         this.id = editora.getId();
         this.nome = editora.getNome();
-        if (editora.getLivros() != null)
+        if (editora.getLivros() != null){
             this.livros = editora.getLivros().stream().map(LivroTOOutput::new).toList();
+        }
+            
     }
 
     public Integer getId() {
