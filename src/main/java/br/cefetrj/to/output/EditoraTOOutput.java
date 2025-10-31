@@ -3,7 +3,6 @@ package br.cefetrj.to.output;
 import java.util.List;
 
 import br.cefetrj.model.Editora;
-import br.cefetrj.model.Livro;
 
 public class EditoraTOOutput {
     private List<LivroTOOutput> livros;
