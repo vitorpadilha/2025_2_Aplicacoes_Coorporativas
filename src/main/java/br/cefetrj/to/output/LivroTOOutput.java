@@ -23,7 +23,21 @@ public class LivroTOOutput {
         this.titulo = livro.getTitulo();
         this.autores = livro.getAutores();
         this.anoPublicacao = livro.getAnoPublicacao();
-        this.editora = new EditoraTOOutput(livro.getEditora());
+        if (livro.getEditora() != null) {
+            this.editora = new EditoraTOOutput(livro.getEditora());
+        }
+    }
+
+    public LivroTOOutput(Livro livro, boolean carregarEditora) {
+        EditoraTOOutput editoraTO = null;
+        if (carregarEditora && livro.getEditora() != null) {
+             editoraTO = new EditoraTOOutput(livro.getEditora());
+        }
+        this.id = livro.getId();
+        this.titulo = livro.getTitulo();
+        this.autores = livro.getAutores();
+        this.anoPublicacao = livro.getAnoPublicacao();
+        this.editora = editoraTO;
     }
 
     public EditoraTOOutput getEditora() {

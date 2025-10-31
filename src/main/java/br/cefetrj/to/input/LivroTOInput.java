@@ -3,7 +3,6 @@ package br.cefetrj.to.input;
 import java.io.Serializable;
 
 import br.cefetrj.model.Livro;
-import jakarta.persistence.criteria.CriteriaBuilder.In;
 
 public class LivroTOInput implements Serializable {
     private String titulo;

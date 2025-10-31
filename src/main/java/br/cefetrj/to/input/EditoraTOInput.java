@@ -8,7 +8,7 @@ public class EditoraTOInput implements Serializable {
     private String nome;
     private Integer id;
 
-    EditoraTOInput() {
+    public EditoraTOInput() {
     }
 
     public Integer getId() {
