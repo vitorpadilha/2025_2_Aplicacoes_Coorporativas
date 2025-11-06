@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.service.annotation.DeleteExchange;
 
 import br.cefetrj.model.Livro;
+import br.cefetrj.model.Usuario;
 import br.cefetrj.service.LivroService;
+import br.cefetrj.service.UsuarioService;
 import br.cefetrj.to.input.LivroTOInput;
 import br.cefetrj.to.output.LivroTOOutput;
 import io.swagger.annotations.Api;
@@ -28,16 +32,21 @@ import io.swagger.annotations.ApiOperation;
 public class LivroController {
     private final LivroService livroService;
 
+    private final UsuarioService usuarioService;
+
     @Autowired
-    public LivroController(LivroService livroService) {
+    public LivroController(LivroService livroService, UsuarioService usuarioService) {
         this.livroService = livroService;
+        this.usuarioService = usuarioService;
     }
 
     @PostMapping
     @ApiOperation(value = "Salvar registro", notes = "Salva um novo registro no banco de dados")
-    public ResponseEntity<LivroTOOutput> save(@RequestBody LivroTOInput input) {
+    public ResponseEntity<LivroTOOutput> save(@AuthenticationPrincipal OAuth2User principal,
+            @RequestBody LivroTOInput input) {
         final var livro = input.build();
-
+        Usuario usuarioLogado = usuarioService.findByEmail(principal.getAttribute("email")).orElse(null);
+        livro.setCriadoPor(usuarioLogado);
         final Livro created = livroService.save(livro);
 
         return new ResponseEntity<>(new LivroTOOutput(created), HttpStatus.CREATED);
@@ -45,9 +54,12 @@ public class LivroController {
 
     @PutMapping
     @ApiOperation(value = "Atualizar registro", notes = "Atualiza um registro existente no banco de dados")
-    public ResponseEntity<LivroTOOutput> edit(@RequestBody LivroTOInput input) {
-
-        final Livro updated = livroService.update(input.build());
+    public ResponseEntity<LivroTOOutput> edit(@AuthenticationPrincipal OAuth2User principal,
+            @RequestBody LivroTOInput input) {
+        final Livro livro = input.build();
+        Usuario usuarioLogado = usuarioService.findByEmail(principal.getAttribute("email")).orElse(null);
+        livro.setAlteradoPor(usuarioLogado);
+        final Livro updated = livroService.update(livro);
 
         return new ResponseEntity<>(new LivroTOOutput(updated), HttpStatus.OK);
     }

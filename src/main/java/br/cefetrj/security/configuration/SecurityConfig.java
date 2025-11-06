@@ -8,7 +8,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
+import static org.springframework.security.config.Customizer.withDefaults;
 import java.util.Arrays;
 
 @Configuration
@@ -16,13 +16,18 @@ import java.util.Arrays;
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable()) // IMPORTANTE: Desabilita CSRF para APIs
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/**").permitAll() // Permite tudo temporariamente
-                        .anyRequest().authenticated());
+                );
+        // .anyRequest().authenticated()
+        // SE Não Fosse restful.oauth2Login(oauth -> oauth.loginPage("/login"))
+
+        // .oauth2ResourceServer(oauth2 -> oauth2.jwt(withDefaults()));
+        // .logout(logout -> logout.logoutSuccessUrl("/").permitAll());
 
         return http.build();
     }

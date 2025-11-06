@@ -7,7 +7,6 @@ import jakarta.persistence.*;
 public class Usuario extends Pessoa {
 
     private String email;
-    private String senha;
     private boolean ativo;
     private String papel; // e.g., "ADMIN", "USER"
 
@@ -19,5 +18,21 @@ public class Usuario extends Pessoa {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public boolean isAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(boolean ativo) {
+        this.ativo = ativo;
+    }
+
+    public String getPapel() {
+        return papel;
+    }
+
+    public void setPapel(String papel) {
+        this.papel = papel;
     }
 }
