@@ -16,34 +16,22 @@ import java.util.Arrays;
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, CorsConfigurationSource corsConfigurationSource)
+            throws Exception {
         http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .csrf(csrf -> csrf.disable()) // IMPORTANTE: Desabilita CSRF para APIs
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/**").permitAll() // Permite tudo temporariamente
-                );
-        // .anyRequest().authenticated()
-        // SE Não Fosse restful.oauth2Login(oauth -> oauth.loginPage("/login"))
 
-        // .oauth2ResourceServer(oauth2 -> oauth2.jwt(withDefaults()));
+                        .requestMatchers("/api/auth/**")
+                        .permitAll()
+                        .anyRequest().authenticated())
+                // SE Não Fosse restful.oauth2Login(oauth -> oauth.loginPage("/login"))
+
+                .oauth2ResourceServer(oauth2 -> oauth2.jwt(withDefaults()));
         // .logout(logout -> logout.logoutSuccessUrl("/").permitAll());
 
         return http.build();
     }
 
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD", "PATCH"));
-        configuration.setAllowedHeaders(Arrays.asList("*"));
-        configuration.setExposedHeaders(Arrays.asList("Authorization", "Content-Type"));
-        configuration.setAllowCredentials(false);
-        configuration.setMaxAge(3600L);
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
 }

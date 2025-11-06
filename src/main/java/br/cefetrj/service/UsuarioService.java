@@ -3,10 +3,12 @@ package br.cefetrj.service;
 import java.util.List;
 import java.util.Optional;
 
-import br.cefetrj.model.Livro;
+import org.springframework.stereotype.Service;
+
 import br.cefetrj.model.Usuario;
 import br.cefetrj.repository.UsuarioRepository;
 
+@Service
 public class UsuarioService {
     protected UsuarioRepository repository;
 

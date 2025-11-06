@@ -22,33 +22,39 @@ public class BibliotecaApplication extends SpringBootServletInitializer {
         SpringApplication.run(BibliotecaApplication.class, args);
     }
 
-    @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-        return builder.sources(BibliotecaApplication.class);
-    }
-
+    /*
+     * @Override
+     * protected SpringApplicationBuilder configure(SpringApplicationBuilder
+     * builder) {
+     * return builder.sources(BibliotecaApplication.class);
+     * }
+     */
     @EventListener(ApplicationReadyEvent.class)
     public void afterInit() throws IOException, URISyntaxException, ClassNotFoundException {
         System.out.println("Aplicação iniciada com sucesso!");
     }
 
     // SOLUÇÃO DE EMERGÊNCIA - Filtro CORS global
-    @Bean
-    public FilterRegistrationBean<CorsFilter> corsFilter() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
-
-        config.setAllowCredentials(false);
-        config.addAllowedOrigin("http://localhost:81");
-        config.addAllowedOrigin("http://127.0.0.1:81");
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("*"); // Permite todos os métodos
-
-        source.registerCorsConfiguration("/**", config);
-
-        FilterRegistrationBean<CorsFilter> bean = new FilterRegistrationBean<>(new CorsFilter(source));
-        bean.setOrder(Ordered.HIGHEST_PRECEDENCE);
-
-        return bean;
-    }
+    /*
+     * @Bean
+     * public FilterRegistrationBean<CorsFilter> corsFilter() {
+     * UrlBasedCorsConfigurationSource source = new
+     * UrlBasedCorsConfigurationSource();
+     * CorsConfiguration config = new CorsConfiguration();
+     * 
+     * config.setAllowCredentials(false);
+     * config.addAllowedOrigin("http://localhost:81");
+     * config.addAllowedOrigin("http://127.0.0.1:81");
+     * config.addAllowedHeader("*");
+     * config.addAllowedMethod("*"); // Permite todos os métodos
+     * 
+     * source.registerCorsConfiguration("/**", config);
+     * 
+     * FilterRegistrationBean<CorsFilter> bean = new FilterRegistrationBean<>(new
+     * CorsFilter(source));
+     * bean.setOrder(Ordered.HIGHEST_PRECEDENCE);
+     * 
+     * return bean;
+     * }
+     */
 }
