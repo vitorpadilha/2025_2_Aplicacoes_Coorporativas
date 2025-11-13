@@ -1,8 +1,10 @@
 package br.cefetrj.to.output;
 
+import java.io.Serializable;
+
 import br.cefetrj.model.Livro;
 
-public class LivroTOOutput {
+public class LivroTOOutput implements Serializable {
 
     private Integer id;
     private String titulo;
@@ -31,7 +33,7 @@ public class LivroTOOutput {
     public LivroTOOutput(Livro livro, boolean carregarEditora) {
         EditoraTOOutput editoraTO = null;
         if (carregarEditora && livro.getEditora() != null) {
-             editoraTO = new EditoraTOOutput(livro.getEditora());
+            editoraTO = new EditoraTOOutput(livro.getEditora());
         }
         this.id = livro.getId();
         this.titulo = livro.getTitulo();
