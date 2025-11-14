@@ -92,6 +92,8 @@ public class UsuarioController {
 
     ) {
 
-        return ResponseEntity.ok(usuarioService.findByEmail(email).map(UsuarioTOOutput::new).orElse(null));
+        return usuarioService.findByEmail(email)
+                .map(u -> ResponseEntity.ok(new UsuarioTOOutput(u)))
+                .orElse(ResponseEntity.notFound().build());
     }
 }
