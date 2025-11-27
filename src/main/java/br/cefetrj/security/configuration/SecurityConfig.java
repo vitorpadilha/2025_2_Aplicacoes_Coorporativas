@@ -1,21 +1,23 @@
 package br.cefetrj.security.configuration;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import static org.springframework.security.config.Customizer.withDefaults;
-import java.util.Arrays;
+
+import br.cefetrj.service.UsuarioService;
 
 @Configuration
-@EnableWebSecurity
+@EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
+        @Autowired
+        private UsuarioService usuarioService;
 
         @Bean
         public SecurityFilterChain securityFilterChain(HttpSecurity http,
@@ -29,10 +31,11 @@ public class SecurityConfig {
                                                 .requestMatchers("/auth/google/**")
                                                 .permitAll()
                                                 .anyRequest().authenticated())
+                                // .oauth2ResourceServer(oauth2 -> oauth2.jwt(withDefaults()))
                                 // SE Não Fosse restful.oauth2Login(oauth -> oauth.loginPage("/login"))
-
-                                .oauth2ResourceServer(oauth2 -> oauth2.jwt(withDefaults()));
-                // .logout(logout -> logout.logoutSuccessUrl("/").permitAll());
+                                .oauth2ResourceServer(oauth2 -> oauth2
+                                                .jwt(jwt -> jwt.jwtAuthenticationConverter(
+                                                                new CustomJwtAuthConverter(usuarioService))));
 
                 return http.build();
         }

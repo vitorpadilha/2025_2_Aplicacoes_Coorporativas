@@ -36,7 +36,7 @@ public class EditoraController {
 
     @PostMapping
     @ApiOperation(value = "Salvar registro", notes = "Salva um novo registro no banco de dados")
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<EditoraTOOutput> save(@RequestBody EditoraTOInput input) {
         final var editora = input;
 
