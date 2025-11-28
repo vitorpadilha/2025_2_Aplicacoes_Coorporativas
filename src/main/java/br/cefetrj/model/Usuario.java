@@ -10,8 +10,6 @@ public class Usuario extends Pessoa {
     private boolean ativo;
     private String papel; // e.g., "ADMIN", "NORMAL"
 
-    // Getters e Setters
-
     public String getEmail() {
         return email;
     }

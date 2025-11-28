@@ -11,6 +11,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfigurationSource;
 
+import br.cefetrj.security.CustomAccessDeniedHandler;
+import br.cefetrj.security.CustomAuthEntryPoint;
 import br.cefetrj.service.UsuarioService;
 
 @Configuration
@@ -34,6 +36,8 @@ public class SecurityConfig {
                                 // .oauth2ResourceServer(oauth2 -> oauth2.jwt(withDefaults()))
                                 // SE Não Fosse restful.oauth2Login(oauth -> oauth.loginPage("/login"))
                                 .oauth2ResourceServer(oauth2 -> oauth2
+                                                .authenticationEntryPoint(new CustomAuthEntryPoint())
+                                                .accessDeniedHandler(new CustomAccessDeniedHandler())
                                                 .jwt(jwt -> jwt.jwtAuthenticationConverter(
                                                                 new CustomJwtAuthConverter(usuarioService))));
 
