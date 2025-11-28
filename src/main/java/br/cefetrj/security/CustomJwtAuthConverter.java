@@ -1,4 +1,4 @@
-package br.cefetrj.security.configuration;
+package br.cefetrj.security;
 
 import java.util.*;
 import org.springframework.core.convert.converter.Converter;

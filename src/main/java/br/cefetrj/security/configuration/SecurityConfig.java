@@ -13,6 +13,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 
 import br.cefetrj.security.CustomAccessDeniedHandler;
 import br.cefetrj.security.CustomAuthEntryPoint;
+import br.cefetrj.security.CustomJwtAuthConverter;
 import br.cefetrj.service.UsuarioService;
 
 @Configuration
